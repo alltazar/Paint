@@ -192,37 +192,26 @@ public class Menu {
                                     String[] p = s.trim().split(":");
                                     map.put(p[0].trim(), p[1].trim());
                                 }
-                                switch (map.get("class")) {
-                                    case "Rect":
-                                        Rect rect = new Rect();
-                                        rect.setX(Integer.parseInt(map.get("x")));
-                                        rect.setY(Integer.parseInt(map.get("y")));
-                                        rect.setDX(Integer.parseInt(map.get("dx")));
-                                        rect.setDY(Integer.parseInt(map.get("dy")));
-                                        rect.setColor(new Color(Integer.parseInt(map.get("color"))));
-                                        model.addShape(rect);
-                                        break;
-
-                                    case "Line":
-                                        Line line1 = new Line();
-                                        line1.setX(Integer.parseInt(map.get("x")));
-                                        line1.setY(Integer.parseInt(map.get("y")));
-                                        line1.setDX(Integer.parseInt(map.get("dx")));
-                                        line1.setDY(Integer.parseInt(map.get("dy")));
-                                        line1.setColor(new Color(Integer.parseInt(map.get("color"))));
-                                        model.addShape(line1);
-                                        break;
-
-                                    case "Oval":
-                                        Oval oval = new Oval();
-                                        oval.setX(Integer.parseInt(map.get("x")));
-                                        oval.setY(Integer.parseInt(map.get("y")));
-                                        oval.setDX(Integer.parseInt(map.get("dx")));
-                                        oval.setDY(Integer.parseInt(map.get("dy")));
-                                        oval.setColor(new Color(Integer.parseInt(map.get("color"))));
-                                        model.addShape(oval);
-                                        break;
+                                Class c = null;
+                                Items o = new Items();
+                                try {
+                                    c = Class.forName(map.get("class"));
+                                } catch (ClassNotFoundException e1) {
+                                    e1.printStackTrace();
                                 }
+                                try {
+                                    o = (Items) c.newInstance();
+                                } catch (InstantiationException e1) {
+                                    e1.printStackTrace();
+                                } catch (IllegalAccessException e1) {
+                                    e1.printStackTrace();
+                                }
+                                o.setX(Integer.parseInt(map.get("x")));
+                                o.setY(Integer.parseInt(map.get("y")));
+                                o.setDX(Integer.parseInt(map.get("dx")));
+                                o.setDY(Integer.parseInt(map.get("dy")));
+                                o.setColor(new Color(Integer.parseInt(map.get("color"))));
+                                model.addShape(o);
                             }
                         } finally {
                             br.close();
