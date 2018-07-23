@@ -202,8 +202,7 @@ public class Menu {
                                         rect.setColor(new Color(Integer.parseInt(map.get("color"))));
                                         model.addShape(rect);
                                         break;
-                                }
-                                switch (map.get("class")) {
+
                                     case "Line":
                                         Line line1 = new Line();
                                         line1.setX(Integer.parseInt(map.get("x")));
@@ -213,8 +212,7 @@ public class Menu {
                                         line1.setColor(new Color(Integer.parseInt(map.get("color"))));
                                         model.addShape(line1);
                                         break;
-                                }
-                                switch (map.get("class")) {
+
                                     case "Oval":
                                         Oval oval = new Oval();
                                         oval.setX(Integer.parseInt(map.get("x")));
