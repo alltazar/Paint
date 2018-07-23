@@ -193,7 +193,7 @@ public class Menu {
                                     map.put(p[0].trim(), p[1].trim());
                                 }
                                 Class c = null;
-                                Items o = new Items();
+                                Items o = null;
                                 try {
                                     c = Class.forName(map.get("class"));
                                 } catch (ClassNotFoundException e1) {
