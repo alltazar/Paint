@@ -1,13 +1,12 @@
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.filechooser.FileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.util.HashMap;
 
 public class Menu {
 
@@ -130,32 +129,107 @@ public class Menu {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                final BufferedImage image = new BufferedImage(paintComponent.getWidth(), paintComponent.getHeight(), BufferedImage.TYPE_INT_RGB);
-
-                paintComponent.paint(image.createGraphics());
-
-                String path = "";
-
-                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-
-                jfc.resetChoosableFileFilters();
-                jfc.addChoosableFileFilter(new FileNameExtensionFilter("png", "png"));
-
-                int returnValue = jfc.showSaveDialog(null);
-
-                if (returnValue == JFileChooser.APPROVE_OPTION) {
-                    File selectedFile = jfc.getSelectedFile();
-                    path = selectedFile.getAbsolutePath();
+//                final BufferedImage image = new BufferedImage(paintComponent.getWidth(), paintComponent.getHeight(), BufferedImage.TYPE_INT_RGB);
+//
+//                paintComponent.paint(image.createGraphics());
+//
+//                String path = "";
+//
+//                JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+//
+//                jfc.resetChoosableFileFilters();
+//                jfc.addChoosableFileFilter(new FileNameExtensionFilter("png", "png"));
+//
+//                int returnValue = jfc.showSaveDialog(null);
+//
+//                if (returnValue == JFileChooser.APPROVE_OPTION) {
+//                    File selectedFile = jfc.getSelectedFile();
+//                    path = selectedFile.getAbsolutePath();
+//                }
+//
+//                if (path != "") {
+//                    try {
+//                        if (jfc.getFileFilter().getDescription() == "png" && !path.contains(".png")) {
+//                            ImageIO.write(image, "png", new File(path + "." + jfc.getFileFilter().getDescription()));
+//                        } else {
+//                            ImageIO.write(image, "png", new File(path));
+//                        }
+//
+//                    } catch (IOException e1) {
+//                        e1.printStackTrace();
+//                    }
+//                }
+                try (PrintWriter out = new PrintWriter("src/external/filename.txt")) {
+                    for (Items s : model.getAllShapes()) {
+                        out.println("hashCode:" + s.hashCode() + ";class:" + s.getClass().getName() + ";color:" + s.getColor().getRGB() + ";x:" + s.getX() + ";y:" + s.getY() + ";dx:" + s.getDX() + ";dy:" + s.getDY());
+                    }
+                } catch (FileNotFoundException e1) {
+                    e1.printStackTrace();
                 }
+            }
+        });
+        menuBar.add(button);
 
-                if (path != "") {
+        button = new JButton("import FILE");
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+
+                int returnVal = fc.showOpenDialog(null);
+
+                if (returnVal == JFileChooser.APPROVE_OPTION) {
+                    File file = fc.getSelectedFile();
                     try {
-                        if (jfc.getFileFilter().getDescription() == "png" && !path.contains(".png")) {
-                            ImageIO.write(image, "png", new File(path + "." + jfc.getFileFilter().getDescription()));
-                        } else {
-                            ImageIO.write(image, "png", new File(path));
+                        BufferedReader br = new BufferedReader(
+                                new InputStreamReader(new FileInputStream(file)));
+                        try {
+                            String line;
+                            HashMap<String, String> map = new HashMap<>();
+                            while ((line = br.readLine()) != null) {
+                                String[] pair = line.trim().split(";");
+                                for (String s : pair) {
+                                    String[] p = s.trim().split(":");
+                                    map.put(p[0].trim(), p[1].trim());
+                                }
+                                switch (map.get("class")) {
+                                    case "Rect":
+                                        Rect rect = new Rect();
+                                        rect.setX(Integer.parseInt(map.get("x")));
+                                        rect.setY(Integer.parseInt(map.get("y")));
+                                        rect.setDX(Integer.parseInt(map.get("dx")));
+                                        rect.setDY(Integer.parseInt(map.get("dy")));
+                                        rect.setColor(new Color(Integer.parseInt(map.get("color"))));
+                                        model.addShape(rect);
+                                        break;
+                                }
+                                switch (map.get("class")) {
+                                    case "Line":
+                                        Line line1 = new Line();
+                                        line1.setX(Integer.parseInt(map.get("x")));
+                                        line1.setY(Integer.parseInt(map.get("y")));
+                                        line1.setDX(Integer.parseInt(map.get("dx")));
+                                        line1.setDY(Integer.parseInt(map.get("dy")));
+                                        line1.setColor(new Color(Integer.parseInt(map.get("color"))));
+                                        model.addShape(line1);
+                                        break;
+                                }
+                                switch (map.get("class")) {
+                                    case "Oval":
+                                        Oval oval = new Oval();
+                                        oval.setX(Integer.parseInt(map.get("x")));
+                                        oval.setY(Integer.parseInt(map.get("y")));
+                                        oval.setDX(Integer.parseInt(map.get("dx")));
+                                        oval.setDY(Integer.parseInt(map.get("dy")));
+                                        oval.setColor(new Color(Integer.parseInt(map.get("color"))));
+                                        model.addShape(oval);
+                                        break;
+                                }
+                            }
+                        } finally {
+                            br.close();
                         }
-
+                        paintComponent.repaint();
                     } catch (IOException e1) {
                         e1.printStackTrace();
                     }
