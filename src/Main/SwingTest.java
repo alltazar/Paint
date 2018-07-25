@@ -14,7 +14,6 @@ public class SwingTest {
     public static void main(String[] args) {
         DataModel model = new DataModel();
 
-
         JComponent paintComponent = new VisualComponent(model);
         Menu menu = new Menu(model, paintComponent);
 
