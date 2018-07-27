@@ -10,7 +10,7 @@ public class Lastik extends Shape {
     }
 
     @Override
-    public Shape newInstance() {
+    public Shape newInstance_() {
         return new Lastik();
     }
 }

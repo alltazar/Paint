@@ -1,19 +1,15 @@
 package Menu;
 
-import Items.Items;
-import Main.SwingTest;
+import Main.SwingTest.DataModel;
+import Main.SwingTest.DataModel.Note;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 public class RedoUndo extends JMenu {
 
-    private static ArrayList<Items> list = new ArrayList<>();
-    private static int count;
-
-    RedoUndo(SwingTest.DataModel model, JComponent paintComponent) {
+    RedoUndo(DataModel model, JComponent paintComponent) {
 
         super("Управление:");
 
@@ -37,34 +33,54 @@ public class RedoUndo extends JMenu {
     }
 
 
-    public static void unDo(SwingTest.DataModel data) {
+    public static void unDo(DataModel data) {
 
-        if (data.getAllShapes().size() != count) {
-            list.clear();
-        }
+        int iterator = data.getIteratorOfItemsHistory();
 
-        if (data.getAllShapes().size() != 0) {
+        if (iterator >= 0) {
 
-            ArrayList<Items> s = data.getAllShapes();
+            Note note = data.getItemsHistory().get(iterator);
 
-            list.add(s.get(s.size() - 1));
-            data.unDo();
-
-            count = s.size();
-
+            if (note.getCreator() == "add") {
+                data.getAllShapes().remove(note.getItem());
+            } else {
+                int i = iterator - 1;
+                while (i > 0) {
+                    Note previousNote = data.getItemsHistory().get(i);
+                    if (previousNote.getItem().equals(note.getItem())) {
+                        previousNote.getItem().setX(previousNote.getX());
+                        previousNote.getItem().setY(previousNote.getY());
+                        previousNote.getItem().setDX(previousNote.getDX());
+                        previousNote.getItem().setDY(previousNote.getDY());
+                        previousNote.getItem().setColor(previousNote.getColor());
+                        break;
+                    }
+                    i--;
+                }
+            }
+            data.setIteratorOfItemsHistory(iterator - 1);
         }
     }
 
-    public static void reDo(SwingTest.DataModel data) {
+    public static void reDo(DataModel data) {
 
-        ArrayList<Items> s = data.getAllShapes();
+        int iterator = data.getIteratorOfItemsHistory();
+        int itemsHistorySize = data.getItemsHistory().size();
 
-        if (count == (s.size()) && list.size() != 0) {
-            data.reDo(list.get(list.size() - 1));
-            list.remove(list.size() - 1);
-            count = s.size();
-        } else {
-            list.clear();
+        if (iterator < itemsHistorySize - 1) {
+
+            Note nextNote = data.getItemsHistory().get(iterator + 1);
+
+            if (nextNote.getCreator() == "add") {
+                data.getAllShapes().add(nextNote.getItem());
+            } else {
+                nextNote.getItem().setX(nextNote.getX());
+                nextNote.getItem().setY(nextNote.getY());
+                nextNote.getItem().setDX(nextNote.getDX());
+                nextNote.getItem().setDY(nextNote.getDY());
+                nextNote.getItem().setColor(nextNote.getColor());
+            }
+            data.setIteratorOfItemsHistory(iterator + 1);
         }
     }
 

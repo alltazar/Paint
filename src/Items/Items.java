@@ -54,7 +54,7 @@ public class Items {
 
     }
 
-    public Items newInstance() {
+    public Items newInstance_() {
 
         return new Items();
     }

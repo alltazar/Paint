@@ -7,6 +7,9 @@ import javax.swing.*;
 import java.awt.event.MouseEvent;
 
 public class ControllerForChanges extends Controller {
+
+    final String s = "edit";
+
     private final SwingTest.DataModel model_;
     private final JComponent visualComponent_;
 
@@ -66,6 +69,9 @@ public class ControllerForChanges extends Controller {
                 break;
             }
         }
+        if (pressedShape_ != null) {
+            model_.clearHistoryTail();
+        }
     }
 
     @Override
@@ -75,6 +81,7 @@ public class ControllerForChanges extends Controller {
             pressedShape_.setDY(pressedShape_.getDY() + (e.getY() - pressedY_));
             pressedShape_.setX(pressedShape_.getX() + (e.getX() - pressedX_));
             pressedShape_.setY(pressedShape_.getY() + (e.getY() - pressedY_));
+            model_.saveToHistory(pressedShape_, "edit");
             visualComponent_.repaint();
             pressedShape_ = null;
             drag = false;
@@ -82,6 +89,7 @@ public class ControllerForChanges extends Controller {
             if (rightDown) {
                 pressedShape_.setDX(e.getX());
                 pressedShape_.setDY(e.getY());
+                model_.saveToHistory(pressedShape_, "edit");
                 visualComponent_.repaint();
                 pressedShape_ = null;
                 rightDown = false;
@@ -89,6 +97,7 @@ public class ControllerForChanges extends Controller {
             if (leftDown) {
                 pressedShape_.setX(pressedShape_.getX() + (e.getX() - pressedX_));
                 pressedShape_.setDY(e.getY());
+                model_.saveToHistory(pressedShape_, "edit");
                 visualComponent_.repaint();
                 pressedShape_ = null;
                 leftDown = false;
@@ -96,6 +105,7 @@ public class ControllerForChanges extends Controller {
             if (rightUp) {
                 pressedShape_.setY(e.getY());
                 pressedShape_.setDX(e.getX());
+                model_.saveToHistory(pressedShape_, "edit");
                 visualComponent_.repaint();
                 pressedShape_ = null;
                 rightUp = false;
@@ -103,6 +113,7 @@ public class ControllerForChanges extends Controller {
             if (leftUp) {
                 pressedShape_.setY(e.getY());
                 pressedShape_.setX(e.getX());
+                model_.saveToHistory(pressedShape_, "edit");
                 visualComponent_.repaint();
                 pressedShape_ = null;
                 leftUp = false;
@@ -113,7 +124,15 @@ public class ControllerForChanges extends Controller {
 
     @Override
     public void mouseDragged(MouseEvent e) {
-
+        if (pressedShape_ != null && drag) {
+            pressedShape_.setDX(pressedShape_.getDX() + (e.getX() - pressedX_));
+            pressedShape_.setDY(pressedShape_.getDY() + (e.getY() - pressedY_));
+            pressedShape_.setX(pressedShape_.getX() + (e.getX() - pressedX_));
+            pressedShape_.setY(pressedShape_.getY() + (e.getY() - pressedY_));
+            visualComponent_.repaint();
+            pressedX_ = e.getX();
+            pressedY_ = e.getY();
+        }
     }
 
     @Override

@@ -20,7 +20,7 @@ public class Oval extends Shape {
     }
 
     @Override
-    public Shape newInstance() {
+    public Shape newInstance_() {
         return new Oval();
     }
 }
