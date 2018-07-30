@@ -5,7 +5,6 @@ import Controller.ControllerUsual;
 import Main.SwingTest;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -30,7 +29,7 @@ public class ControllerChooser extends JMenu {
                 paintComponent.removeMouseMotionListener(cfc);
                 paintComponent.addMouseListener(cu);
                 paintComponent.addMouseMotionListener(cu);
-                paintComponent.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+//                paintComponent.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
             }
         });
         this.add(menuItem);
@@ -42,7 +41,7 @@ public class ControllerChooser extends JMenu {
                 paintComponent.removeMouseMotionListener(cu);
                 paintComponent.addMouseListener(cfc);
                 paintComponent.addMouseMotionListener(cfc);
-                paintComponent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//                paintComponent.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             }
         });
         this.add(menuItem);

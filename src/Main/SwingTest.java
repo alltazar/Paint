@@ -8,7 +8,6 @@ import Menu.Menu;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 public class SwingTest {
 
@@ -31,7 +30,7 @@ public class SwingTest {
     }
 
     public static class DataModel {
-        private HashSet<Items> allShapes_;
+        private ArrayList<Items> allShapes_;
         private Items shape_;
         private Color color_;
 
@@ -40,7 +39,7 @@ public class SwingTest {
         private int iteratorOfItemsHistory = -1;
 
         public DataModel() {
-            allShapes_ = new HashSet<>();
+            allShapes_ = new ArrayList<>();
             history = new ArrayList<>();
             history.add(new ArrayList<>());
             shape_ = new Rect();
@@ -67,8 +66,9 @@ public class SwingTest {
             s.setDY(shape.getDY());
             s.setColor(shape.getColor());
 
+            //shape_=s;
             allShapes_.add(s);
-            saveToHistory(s, "add");
+            //saveToHistory(s, "add");
         }
 
         public void addBI(Items shape) {
@@ -85,7 +85,7 @@ public class SwingTest {
             shape_ = s;
         }
 
-        public HashSet<Items> getAllShapes() {
+        public ArrayList<Items> getAllShapes() {
             return allShapes_;
         }
 
@@ -172,6 +172,8 @@ public class SwingTest {
                     s.paint(g, s);
                 }
             }
+
+            //model_.shape_.paint(g,model_.shape_);
         }
     }
 }

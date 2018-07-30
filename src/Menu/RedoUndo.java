@@ -45,7 +45,7 @@ public class RedoUndo extends JMenu {
                 data.getAllShapes().remove(note.getItem());
             } else {
                 int i = iterator - 1;
-                while (i > 0) {
+                while (i >= 0) {
                     Note previousNote = data.getItemsHistory().get(i);
                     if (previousNote.getItem().equals(note.getItem())) {
                         previousNote.getItem().setX(previousNote.getX());
