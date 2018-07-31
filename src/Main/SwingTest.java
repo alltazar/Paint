@@ -1,12 +1,14 @@
 package Main;
 
+import Controller.ControllerForChanges;
 import Items.Items;
 import Items.Rect;
-import Items.Shape;
 import Menu.Menu;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
 public class SwingTest {
@@ -24,6 +26,27 @@ public class SwingTest {
         JFrame frame = new JFrame("Paint Test");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(contentPanel);
+        frame.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_DELETE && paintComponent.getMouseListeners()[0] instanceof ControllerForChanges) {
+                    if (model.getShape() != null) {
+                        model.saveToHistory(model.getPressedShape(), "del");
+                        model.getAllShapes().remove(model.getPressedShape());
+                        paintComponent.repaint();
+                    }
+                }
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+            }
+        });
         frame.setBounds(0, 0, 600, 400);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -32,6 +55,7 @@ public class SwingTest {
     public static class DataModel {
         private ArrayList<Items> allShapes_;
         private Items shape_;
+        private Items pressedShape_;
         private Color color_;
 
         private ArrayList<ArrayList<Items>> history;
@@ -66,9 +90,7 @@ public class SwingTest {
             s.setDY(shape.getDY());
             s.setColor(shape.getColor());
 
-            //shape_=s;
             allShapes_.add(s);
-            //saveToHistory(s, "add");
         }
 
         public void addBI(Items shape) {
@@ -81,8 +103,16 @@ public class SwingTest {
             return shape_;
         }
 
-        public void setShape(Shape s) {
+        public void setShape(Items s) {
             shape_ = s;
+        }
+
+        public Items getPressedShape() {
+            return pressedShape_;
+        }
+
+        public void setPressedShape(Items s) {
+            pressedShape_ = s;
         }
 
         public ArrayList<Items> getAllShapes() {
@@ -148,11 +178,6 @@ public class SwingTest {
                 return creator;
             }
         }
-
-//        public void saveRemakeItemsToHistory(Items its){
-//            itemsHistory.add(new Note(its, its.getX(), its.getY(), its.getDX(), its.getDY(), its.getColor(), "edit"));
-//            iteratorOfItemsHistory++;
-//        }
     }
 
     static class VisualComponent extends JPanel {
@@ -173,7 +198,6 @@ public class SwingTest {
                 }
             }
 
-            //model_.shape_.paint(g,model_.shape_);
         }
     }
 }

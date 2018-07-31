@@ -13,10 +13,10 @@ import java.io.File;
 import java.io.IOException;
 
 public class IMG {
-    JButton button = new JButton("+IMG");
+    JMenuItem imgItem = new JMenuItem("+IMG");
 
     IMG(SwingTest.DataModel model, JComponent paintComponent) {
-        button.addActionListener(new ActionListener() {
+        imgItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 final JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());

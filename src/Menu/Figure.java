@@ -1,6 +1,5 @@
 package Menu;
 
-import Items.Lastik;
 import Items.Line;
 import Items.Oval;
 import Items.Rect;
@@ -43,14 +42,6 @@ public class Figure extends JMenu {
         });
         this.add(menuItem);
 
-
-        menuItem = new JMenuItem("ластик");
-        menuItem.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                model.setShape(new Lastik());
-            }
-        });
-        this.add(menuItem);
     }
 
     private static ImageIcon createImageIcon(String path) {

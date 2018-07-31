@@ -13,10 +13,10 @@ import java.io.*;
 import java.util.HashMap;
 
 public class Import {
-    JButton button = new JButton("import FILE");
+    JMenuItem importItem = new JMenuItem("import FILE");
 
     Import(SwingTest.DataModel model, JComponent paintComponent) {
-        button.addActionListener(new ActionListener() {
+        importItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 final JFileChooser fc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());

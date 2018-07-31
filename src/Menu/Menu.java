@@ -23,13 +23,13 @@ public class Menu {
         menuBar.add(cc);
 
         IMG img = new IMG(model, paintComponent);
-        menuBar.add(img.button);
+        menuBar.add(img.imgItem);
 
         Save save = new Save(model);
-        menuBar.add(save.button);
+        menuBar.add(save.saveItem);
 
         Import import_ = new Import(model, paintComponent);
-        menuBar.add(import_.button);
+        menuBar.add(import_.importItem);
 
 
     }

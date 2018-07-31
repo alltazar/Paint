@@ -43,6 +43,13 @@ public class RedoUndo extends JMenu {
 
             if (note.getCreator() == "add") {
                 data.getAllShapes().remove(note.getItem());
+            } else if (note.getCreator() == "del") {
+                note.getItem().setX(note.getX());
+                note.getItem().setY(note.getY());
+                note.getItem().setDX(note.getDX());
+                note.getItem().setDY(note.getDY());
+                note.getItem().setColor(note.getColor());
+                data.getAllShapes().add(note.getItem());
             } else {
                 int i = iterator - 1;
                 while (i >= 0) {
@@ -73,6 +80,8 @@ public class RedoUndo extends JMenu {
 
             if (nextNote.getCreator() == "add") {
                 data.getAllShapes().add(nextNote.getItem());
+            } else if (nextNote.getCreator() == "del") {
+                data.getAllShapes().remove(nextNote.getItem());
             } else {
                 nextNote.getItem().setX(nextNote.getX());
                 nextNote.getItem().setY(nextNote.getY());

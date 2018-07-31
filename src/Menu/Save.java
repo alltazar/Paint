@@ -13,10 +13,10 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 
 public class Save {
-    JButton button = new JButton("SAVE");
+    JMenuItem saveItem = new JMenuItem("SAVE");
 
     Save(SwingTest.DataModel model) {
-        button.addActionListener(new ActionListener() {
+        saveItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 //                final BufferedImage image = new BufferedImage(paintComponent.getWidth(), paintComponent.getHeight(), BufferedImage.TYPE_INT_RGB);
@@ -78,7 +78,7 @@ public class Save {
                     if (jfc.getFileFilter().getDescription() == "txt" && !path.contains(".txt")) {
                         try (PrintWriter out = new PrintWriter(path + ".txt")) {
                             for (Items s : model.getAllShapes()) {
-                                out.println("hashCode:" + s.hashCode() + ";class:" + s.getClass().getName()
+                                out.println("class:" + s.getClass().getName()
                                         + ";color:" + s.getColor().getRGB()
                                         + ";x:" + s.getX() + ";y:" + s.getY() + ";dx:" + s.getDX() + ";dy:" + s.getDY());
                             }
@@ -88,7 +88,7 @@ public class Save {
                     } else {
                         try (PrintWriter out = new PrintWriter(path)) {
                             for (Items s : model.getAllShapes()) {
-                                out.println("hashCode:" + s.hashCode() + ";class:" + s.getClass().getName()
+                                out.println("class:" + s.getClass().getName()
                                         + ";color:" + s.getColor().getRGB()
                                         + ";x:" + s.getX() + ";y:" + s.getY() + ";dx:" + s.getDX() + ";dy:" + s.getDY());
                             }

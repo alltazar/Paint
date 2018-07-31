@@ -9,17 +9,17 @@ import java.awt.event.MouseEvent;
 
 public class ControllerForChanges extends Controller {
 
-    final String s = "edit";
+    public static final String METHOD = "edit";
 
     private final SwingTest.DataModel model_;
     private final JComponent visualComponent_;
 
     private boolean drag = false;
+    private boolean changes = false;
 
-    private boolean rightUp = false;
-    private boolean rightDown = false;
-    private boolean leftUp = false;
-    private boolean leftDown = false;
+    private boolean corner = false;
+    private boolean udside = false;
+    private boolean lrside = false;
 
     private Items pressedShape_ = null;
     private int pressedX_;
@@ -50,6 +50,18 @@ public class ControllerForChanges extends Controller {
             } else if (e.getX() >= its.getDX() - sw && e.getX() <= its.getDX() && e.getY() >= its.getDY() - sh && e.getY() <= its.getDY()) {
                 visualComponent_.setCursor(new Cursor(Cursor.NW_RESIZE_CURSOR));
                 break;
+            } else if (e.getX() > its.getX() + sw && e.getX() < its.getDX() - sw && e.getY() >= its.getY() && e.getY() <= its.getY() + sh) {
+                visualComponent_.setCursor(new Cursor(Cursor.S_RESIZE_CURSOR));
+                break;
+            } else if (e.getX() > its.getX() + sw && e.getX() < its.getDX() - sw && e.getY() >= its.getDY() - sh && e.getY() <= its.getDY()) {
+                visualComponent_.setCursor(new Cursor(Cursor.S_RESIZE_CURSOR));
+                break;
+            } else if (e.getX() >= its.getX() && e.getX() <= its.getX() + sw && e.getY() > its.getY() + sh && e.getY() < its.getDY() - sh) {
+                visualComponent_.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+                break;
+            } else if (e.getX() >= its.getDX() - sw && e.getX() <= its.getDX() && e.getY() > its.getY() + sh && e.getY() < its.getDY() - sh) {
+                visualComponent_.setCursor(new Cursor(Cursor.W_RESIZE_CURSOR));
+                break;
             } else if (e.getX() >= its.getX() && e.getX() <= its.getDX() && e.getY() >= its.getY() && e.getY() <= its.getDY()) {
                 visualComponent_.setCursor(new Cursor(Cursor.HAND_CURSOR));
                 break;
@@ -66,32 +78,72 @@ public class ControllerForChanges extends Controller {
             int sw = 5;
             int sh = 5;
             if (e.getX() >= its.getX() && e.getX() <= (its.getX() + sw) && e.getY() >= its.getY() && e.getY() <= (its.getY() + sh)) {
-                leftUp = true;
+                corner = true;
                 pressedShape_ = its;
+                model_.setPressedShape(pressedShape_);
                 pressedX_ = e.getX();
                 pressedY_ = e.getY();
                 x_ = pressedShape_.getDX();
                 y_ = pressedShape_.getDY();
                 break;
             } else if (e.getX() <= its.getDX() && e.getX() >= (its.getDX() - sw) && e.getY() >= its.getY() && e.getY() <= (its.getY() + sh)) {
-                rightUp = true;
+                corner = true;
                 pressedShape_ = its;
+                model_.setPressedShape(pressedShape_);
                 pressedX_ = e.getX();
                 pressedY_ = e.getY();
                 x_ = pressedShape_.getX();
                 y_ = pressedShape_.getDY();
                 break;
             } else if (e.getX() >= its.getX() && e.getX() <= (its.getX() + sw) && e.getY() >= its.getDY() - sh && e.getY() <= its.getDY()) {
-                leftDown = true;
+                corner = true;
                 pressedShape_ = its;
+                model_.setPressedShape(pressedShape_);
                 pressedX_ = e.getX();
                 pressedY_ = e.getY();
                 x_ = pressedShape_.getDX();
                 y_ = pressedShape_.getY();
                 break;
             } else if (e.getX() >= its.getDX() - sw && e.getX() <= its.getDX() && e.getY() >= its.getDY() - sh && e.getY() <= its.getDY()) {
-                rightDown = true;
+                corner = true;
                 pressedShape_ = its;
+                model_.setPressedShape(pressedShape_);
+                pressedX_ = e.getX();
+                pressedY_ = e.getY();
+                x_ = pressedShape_.getX();
+                y_ = pressedShape_.getY();
+                break;
+            } else if (e.getX() > its.getX() + sw && e.getX() < its.getDX() - sw && e.getY() >= its.getY() && e.getY() <= its.getY() + sh) {
+                udside = true;
+                pressedShape_ = its;
+                model_.setPressedShape(pressedShape_);
+                pressedX_ = e.getX();
+                pressedY_ = e.getY();
+                x_ = pressedShape_.getX();
+                y_ = pressedShape_.getDY();
+                break;
+            } else if (e.getX() > its.getX() + sw && e.getX() < its.getDX() - sw && e.getY() >= its.getDY() - sh && e.getY() <= its.getDY()) {
+                udside = true;
+                pressedShape_ = its;
+                model_.setPressedShape(pressedShape_);
+                pressedX_ = e.getX();
+                pressedY_ = e.getY();
+                x_ = pressedShape_.getX();
+                y_ = pressedShape_.getY();
+                break;
+            } else if (e.getX() >= its.getX() && e.getX() <= its.getX() + sw && e.getY() > its.getY() + sh && e.getY() < its.getDY() - sh) {
+                lrside = true;
+                pressedShape_ = its;
+                model_.setPressedShape(pressedShape_);
+                pressedX_ = e.getX();
+                pressedY_ = e.getY();
+                x_ = pressedShape_.getDX();
+                y_ = pressedShape_.getY();
+                break;
+            } else if (e.getX() >= its.getDX() - sw && e.getX() <= its.getDX() && e.getY() > its.getY() + sh && e.getY() < its.getDY() - sh) {
+                lrside = true;
+                pressedShape_ = its;
+                model_.setPressedShape(pressedShape_);
                 pressedX_ = e.getX();
                 pressedY_ = e.getY();
                 x_ = pressedShape_.getX();
@@ -99,6 +151,7 @@ public class ControllerForChanges extends Controller {
                 break;
             } else if (e.getX() >= its.getX() && e.getX() <= its.getDX() && e.getY() >= its.getY() && e.getY() <= its.getDY()) {
                 pressedShape_ = its;
+                model_.setPressedShape(pressedShape_);
                 pressedX_ = e.getX();
                 pressedY_ = e.getY();
                 drag = true;
@@ -112,11 +165,15 @@ public class ControllerForChanges extends Controller {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (pressedShape_ != null) {
-            model_.saveToHistory(pressedShape_, "edit");
+        if (pressedShape_ != null && changes) {
+            model_.saveToHistory(pressedShape_, METHOD);
             visualComponent_.repaint();
-            pressedShape_ = null;
+            //pressedShape_ = null;
             drag = false;
+            changes = false;
+            corner = false;
+            udside = false;
+            lrside = false;
         }
     }
 
@@ -130,27 +187,54 @@ public class ControllerForChanges extends Controller {
             visualComponent_.repaint();
             pressedX_ = e.getX();
             pressedY_ = e.getY();
-        } else if (pressedShape_ != null) {
+            changes = true;
+        } else if (pressedShape_ != null && corner) {
             if (e.getX() >= x_ && e.getY() >= y_) {
                 pressedShape_.setX(x_);
                 pressedShape_.setY(y_);
                 pressedShape_.setDX(e.getX());
                 pressedShape_.setDY(e.getY());
+                changes = true;
             } else if (e.getX() >= x_ && e.getY() < y_) {
                 pressedShape_.setX(x_);
-                pressedShape_.setDY(pressedShape_.getDY());
+                pressedShape_.setDY(y_);
                 pressedShape_.setDX(e.getX());
                 pressedShape_.setY(e.getY());
+                changes = true;
             } else if (e.getX() < x_ && e.getY() < y_) {
                 pressedShape_.setX(e.getX());
                 pressedShape_.setDY(y_);
                 pressedShape_.setDX(x_);
                 pressedShape_.setY(e.getY());
+                changes = true;
             } else if (e.getX() < x_ && e.getY() >= y_) {
                 pressedShape_.setX(e.getX());
                 pressedShape_.setY(y_);
                 pressedShape_.setDX(x_);
                 pressedShape_.setDY(e.getY());
+                changes = true;
+            }
+            visualComponent_.repaint();
+        } else if (pressedShape_ != null && udside) {
+            if (e.getY() < y_) {
+                pressedShape_.setDY(y_);
+                pressedShape_.setY(e.getY());
+                changes = true;
+            } else if (e.getY() >= y_) {
+                pressedShape_.setY(y_);
+                pressedShape_.setDY(e.getY());
+                changes = true;
+            }
+            visualComponent_.repaint();
+        } else if (pressedShape_ != null && lrside) {
+            if (e.getX() >= x_) {
+                pressedShape_.setX(x_);
+                pressedShape_.setDX(e.getX());
+                changes = true;
+            } else if (e.getX() < x_) {
+                pressedShape_.setX(e.getX());
+                pressedShape_.setDX(x_);
+                changes = true;
             }
             visualComponent_.repaint();
         }
@@ -159,4 +243,5 @@ public class ControllerForChanges extends Controller {
     @Override
     public void mouseClicked(MouseEvent e) {
     }
+
 }
